@@ -1,0 +1,40 @@
+html{
+
+	background: black;
+	color: white;
+	height: 100%;
+	width: 100%;
+
+}
+
+#input{
+
+	position: absolute;
+	top:0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin: auto;
+	width: 10vw;
+	height: 4vh;
+    border-radius: 10px;
+    font-family: 'Abel';
+    font-size: large;
+    outline: none;
+    transition: all .5s ease;
+    overflow: hidden;
+    border: 3px solid white;
+    background:linear-gradient(45deg, lightgrey, #a3a3a3);
+    text-align: center;
+
+	padding-top: 2vh;
+
+}
+#input:hover, #input:focus{
+	width: 30vw;
+	height: 12vh;
+	font-size: x-large;
+}
+div{
+
+}
