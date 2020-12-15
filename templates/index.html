@@ -4,10 +4,70 @@
 	<title>Author Identification</title>
 <link href='https://fonts.googleapis.com/css?family=Abel' rel='stylesheet'>
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/IndexStyle.css') }}">
-	<script type="text/javascript" src="{{ url_for('static', filename='js/IndexJs.js') }}"></script>
+			<script type="text/javascript" src="{{ url_for('static', filename='js/IndexJs.js') }}"></script>
+
 </head>
 
 <body>
-<textarea id="input">Test test test</textarea>
+
+	<div class="grid">
+		<textarea id="input">Test test test</textarea>
+			<nav>
+				<menu>
+
+					<menuitem class="main">
+						<a>ALL IN ONE</a>
+					</menuitem>
+
+					<menuitem>
+
+						<a>NGRAM</a>
+						<menu>
+
+			               <menuitem>
+			                  <a>Character Based</a>
+							</menuitem>
+
+							<menuitem>
+			                  <a>Word Based</a>
+							</menuitem>
+
+							<menuitem>
+			                  <a>POS Based</a>
+							</menuitem>
+
+						</menu>
+					</menuitem>
+
+					<menuitem>
+
+						<a>BOW</a>
+						<menu>
+
+		               <menuitem>
+		                  <a>BASIC</a>
+		                  <menu>
+		                     <menuitem><a>SVC</a></menuitem>
+		                     <menuitem><a>Random Forest</a></menuitem>
+		                     <menuitem><a>Multinomial Naive Bayes</a></menuitem>
+		                  </menu>  
+						</menuitem>
+
+						<menuitem>
+		                  <a>TF-IDF</a>
+		                  <menu>
+		                     <menuitem><a>SVC</a></menuitem>
+		                     <menuitem><a>Random Forest</a></menuitem>
+		                     <menuitem><a>Multinomial Naive Bayes</a></menuitem>
+		                  </menu>  
+						</menuitem>
+
+						</menu>
+					</menuitem>
+				</menu>
+			</nav>
+	</div>
 </body>
+
+
 </html>
