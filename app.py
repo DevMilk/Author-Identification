@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify, redirect, request
 from flask import render_template
 import os
 from enum import Enum
@@ -7,8 +7,7 @@ try:
 except:
     import pickle
 import pandas as pd
-
-
+from flasgger import Swagger
 def load_models():
     models = []
     for modelName in os.listdir("models"):
@@ -26,22 +25,28 @@ models = load_models() #Modelleri localden çekecek
 train,test = load_dataset()
 
 app = Flask(__name__)
-
+swagger = Swagger(app)
 class Model(Enum):
-    BOW = 0
-    NGRAM = 2
+    BOW = 2
+    NGRAM = 1
     STYLE = 3
-    ALL = 1
-
+    ALL = 0
 
 @app.route('/')
 def hello():
     return render_template("index.html");
 
 
-@app.route('/predict')
-def predict(text,modelEnum,**args): #Model.NGRAM şeklinde bir parametre
+@app.route('/predict',methods= ["POST"])
+def predict(): #Model.NGRAM şeklinde bir parametre
     predictions = []
+    parameters = request.get_json()
+    
+    text = parameters.get("text")
+    modelEnum = parameters.get("ModelEnum")
+    args = parameters.get("args")
+
+
     if(modelEnum==Model.ALL):
         for i in range(0,3):
             predictions.append(models[i].predict(text,{"Additional":"ALL"}))
