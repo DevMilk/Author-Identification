@@ -34,18 +34,20 @@ var enums = {
 
 	"Character Based": "CHR",
 	"Word Based" : "WRD",
-	"POS Based" : "POS"
+	"POS Based" : "POS",
 
+	"ALL IN ONE": "ALL",
+	"NGRAM": "NGRAM",
+	"BOW": "BOW"
 };
 
 var  BaseClasses = ["ALL IN ONE","NGRAM","BOW"]
 // Additional: BASIC/TF-IDF SVC/RF/MNB CHR/WRD/POS
-function predict(modelNum,enumArray){
+function predict(args){
 	let input = getInput();
 	let request = {
 		"text": input,
-		"modelEnum": modelNum,
-		"args": enumArray
+		"args": args
 	}
 	console.log("Sended JSON: ",request);
 	POST("/predict",request)
@@ -77,15 +79,14 @@ function click(event){
 
 	
 
-	let Modelname = args.pop();
-	let modelNum = BaseClasses.findIndex((element) => element == Modelname)
-	let enumArray = []
+
+	let argsArray = []
 	if(args.length!=0){
 		for(var i = 0;i<args.length;i++){
-			enumArray.push(enums[args[i]])
+			argsArray.push(enums[args[i]])
 		}
 	}
-	predict(modelNum,enumArray);
+	predict(argsArray);
 
 
 

@@ -26,11 +26,41 @@ train,test = load_dataset()
 
 app = Flask(__name__)
 swagger = Swagger(app)
-class Model(Enum):
-    BOW = 2
-    NGRAM = 1
-    STYLE = 3
-    ALL = 0
+
+
+Model_dict = {
+    "NGRAM": {
+        "WRD": None ,
+        "CHR": None,
+        "POS": None
+    },
+    "BOW": {
+        "BASIC": None,
+        "TF-IDF": None,
+    }
+}
+
+
+def getModelFromDict(args):
+    print(args[-1])
+    requestedModel = Model_dict[args[-1]]
+    counter = len(args)-2
+    while(isinstance(requestedModel,dict)):
+        if(counter<0):
+            print(list(requestedModel.keys())[0])
+            requestedModel =requestedModel[list(requestedModel.keys())[0]]
+        else:
+            requestedModel = requestedModel[args[counter]]
+            print(args[counter])
+            counter = counter -1
+    counter = counter +1 
+    last_args = args[:counter]
+    if(counter<0):
+        last_args = []
+    print(last_args)
+    return requestedModel, last_args
+
+
 
 @app.route('/')
 def hello():
@@ -43,15 +73,14 @@ def predict(): #Model.NGRAM şeklinde bir parametre
     parameters = request.get_json()
     
     text = parameters.get("text")
-    modelEnum = parameters.get("ModelEnum")
     args = parameters.get("args")
-
-
-    if(modelEnum==Model.ALL):
+    print(args)
+    if(args[-1]=="ALL"):
         for i in range(0,3):
-            predictions.append(models[i].predict(text,{"Additional":"ALL"}))
+            predictions.append(models[i].predict(text))
     else:
-        predictions.append(models[modelEnum].predict(text,args))
+        model, last_args =  getModelFromDict(args)
+        predictions.append(model.predict(text,last_args))
 
     return predictions
 
