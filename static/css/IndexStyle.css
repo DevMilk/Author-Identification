@@ -15,22 +15,27 @@ body{
 	width: -webkit-fill-available;
 }
 
-.grid{
+.center{
 	display: grid;
+	grid-gap: 6vh;
 	justify-content: center;
 	align-content: center;
-	height: -webkit-fill-available;
 	align-items: center;
 	vertical-align: center;
-	grid-template-columns: 3fr 1fr 1fr 3fr;
+	width: min-content; 
+	position: absolute;
+	margin-left: 40vw;
+	margin-top: 40vh;
+	margin-bottom:40vh;
+
 }
+
 #input{
-	margin-right: 2vw;
 	width: 10vw;
 	height: 4vh;
     border-radius: 10px;
     font-family: 'Abel';
-    font-size: large;
+    font-size: x-large;
     outline: none;
     transition: all .5s;
     overflow: hidden;
@@ -39,7 +44,6 @@ body{
     text-align: center;
 
 	padding-top: 2vh;
-	grid-column-start:2; 
 
 }
 #input:hover, #input:focus{
@@ -54,7 +58,7 @@ html, body{
    padding:0px;
    margin:0px;
    background:#191A1D;
-   font-family: 'Karla', sans-serif;
+   font-family: 'Abel';
    width:100vw;
 }
 body * {
@@ -96,9 +100,6 @@ nav > menu > menuitem menuitem menu {
 /* User Styles Below Not Required */
 /* User Styles Below Not Required */
 
-nav { 
-   margin-left: var(--edgeSize);
-}
 
 nav a {
    background:#75F;
@@ -169,4 +170,12 @@ menuitem{
 	visibility: visible;
 }
 
-
+#acts{
+	font-size: x-large;
+	font-family: 'Abel';
+	background: #75F;
+	color: white;
+	border: 5px solid #75F;
+	transition: all 0.5s;
+	outline: none;
+}

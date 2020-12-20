@@ -50,7 +50,8 @@ function predict(args){
 		"args": args
 	}
 	console.log("Sended JSON: ",request);
-	POST("/predict",request)
+	endpoint = document.getElementById("acts").value;
+	POST("/"+endpoint,request)
 
 }
 
