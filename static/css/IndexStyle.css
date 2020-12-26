@@ -24,8 +24,8 @@ body{
 	vertical-align: center;
 	width: min-content; 
 	position: absolute;
-	margin-left: 40vw;
-	margin-top: 40vh;
+	margin-left: 60vw;
+	margin-top: 30vh;
 	margin-bottom:40vh;
 
 }
@@ -48,7 +48,7 @@ body{
 }
 #input:hover, #input:focus{
 	width: 20vw;
-	height: 8vh;
+	height: 20vh;
 	font-size: x-large;
 }
 
@@ -178,4 +178,20 @@ menuitem{
 	border: 5px solid #75F;
 	transition: all 0.5s;
 	outline: none;
+}
+#output{
+	display: grid;
+	grid-gap: 6vh;
+	justify-content: center;
+	align-content: center;
+	align-items: center;
+	vertical-align: center;
+	width: 6vw; 
+	position: absolute;
+	font-size: xx-large;
+	margin-left: 30vw;
+	margin-top: 30vh;
+}
+#description{
+	width: 30vw;
 }
