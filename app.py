@@ -2,13 +2,14 @@ from flask import Flask, jsonify, redirect, request
 from flask import render_template
 import os
 from enum import Enum
-try:
-    import cPickle as pickle
-except:
-    import pickle
+import pickle
 import pandas as pd
 from flasgger import Swagger
 
+from models import *
+
+
+print(abc)
 
 Model_dict = {
     "NGRAM": {
@@ -16,20 +17,52 @@ Model_dict = {
         "CHR": None,
         "POS": None
     },
-    "BOW": {
-        "BASIC": None,
-        "TF-IDF": None,
+    "BASIC-BOW": {
+        "RF": None,
+        "MNB": None,
+        "SVC": None
+    },
+    "TF-IDF-BOW": {
+        "RF": None,
+        "MNB": None,
+        "SVC": None
+    },
+    "STYLE-BASED": {
+        "RF": None,
+        "SVC": None
     }
 }
+
+def load_model(mainModel, subModel):
+  pickle_filename = "./models/saved_models/"+mainModel+ '/' + subModel+".pkl"
+  picklefile = open(pickle_filename, 'rb')
+  model = pickle.load(picklefile)
+  picklefile.close()
+  return model
+
+print('before')
+try:
+    model = load_model('NGRAM', 'CHR')
+except Exception as e:
+    print(e)
+print('after')
+print(model.predict('asd'))
 
 def load_models():
     models = []
     try:
         for mainModel in list(Model_dict.keys()):
-            for subModel in list(Model_dict[mainModel].keys()):
-                Model_dict[mainModel][subModel] =pickle.load(open("models/"+mainModel+"/"+subModel+".pkl","rb",-1))
-    except: 
-        pass
+            for subModel in list(Model_dict[mainModel].keys()): 
+                model= mainModel + '/' + subModel
+                try:
+                    Model_dict[mainModel][subModel] = load_model(mainModel, subModel)
+                    print(model + 'was installed successfully!')
+                except Exception as e:
+                    print('An error has occurred while installing ' + model)
+                    # print(e)
+                
+    except Exception as e: 
+        print(e)
     return models
 
 
@@ -37,15 +70,14 @@ def load_dataset():
     col_list = ["author","text"]
     return pd.read_csv("dataset/train.csv",usecols=col_list),pd.read_csv("dataset/test.csv",usecols=col_list)
 
-
+print('hello world')
+print(Model_dict)
 models = load_models() #Modelleri localden çekecek
-train_data,test_data = load_dataset()
+print(models['NGRAM']['POS'].predict('asd'))
+train_data, test_data = load_dataset()
 
 app = Flask(__name__)
 swagger = Swagger(app)
-
-
-
 
 
 def getModelFromDict(args):
@@ -68,7 +100,7 @@ def getModelFromDict(args):
     return requestedModel, last_args
 
 
-def runMethodOfModel(methodName,args,material):
+def runMethodOfModel(methodName, args,material):
     results = []
     if(args[-1]=="ALL"):
         for key in list(requestedModel.keys()):
@@ -88,7 +120,7 @@ def hello():
 
 #Modele tahmin yaptırır
 
-@app.route('/predict',methods= ["POST"])
+@app.route('/predict', methods= ["POST"])
 def predict():
     parameters = request.get_json()
     text = parameters.get("text")
@@ -100,7 +132,7 @@ def predict():
 
 #Mevcut modeli eğitir ve train accuracy'sini döndürür
 
-@app.route('/train')
+@app.route('/train', methods= ["POST"])
 def train(): 
     parameters = request.get_json()
     args = parameters.get("args")
@@ -110,11 +142,11 @@ def train():
 
 #Mevcut modeli test eder ve test accuracy'sini döndürür
 
-@app.route('/test')
+@app.route('/test', methods= ["POST"])
 def test(): 
     parameters = request.get_json()
     args = parameters.get("args")
-    return runMethodOfModel("test",args,train_data)
+    return runMethodOfModel("test", args, train_data)
 
 
 if __name__ == '__main__':
