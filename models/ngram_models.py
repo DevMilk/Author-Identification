@@ -5,6 +5,10 @@ from nltk import word_tokenize, ngrams
 from nltk import sent_tokenize, word_tokenize, pos_tag
 from models.preprocessing import clean_text
 
+#TODO: TEST KISMINI YAP
+
+DEFAULT_N = 3
+DEFAULT_L = 3
 class CharLevelTextNgram:
   def __init__(self, dataset):
     self.dataset = dataset.copy()
@@ -25,7 +29,7 @@ class CharLevelTextNgram:
       dataset[i] = self.__create_author_profile(dataset[i], n, L)
     return dataset
 
-  def __create_author_profile(self, text, n, L):
+  def __create_author_profile(self, text, n=DEFAULT_N, L=DEFAULT_L):
     cleaned_text = self.__preprocess_text(text)
     df_ngram = ngrams(cleaned_text, n)
     ngram_distribution = nltk.FreqDist(df_ngram)
@@ -91,12 +95,12 @@ class CharLevelTextNgram:
       if sum < similarity_score:
         similarity_score = sum
         index = i
-    return index, self.dataset.index[index]
+    return self.dataset.index[index]
 
   def __calculate_dissimilarity(self, value1, value2):
     return ((2*(value1 - value2))/(value1 + value2))**2
 
-  def fit(self, n, L):
+  def fit(self, n=DEFAULT_N, L=DEFAULT_L):
     self.n, self.L = n, L
     self.cleaned_dataset = self.__preprocess_text_array(self.dataset)
     self.author_profiles = self.__create_author_profiles(self.cleaned_dataset, n, L)
@@ -106,7 +110,7 @@ class CharLevelTextNgram:
     author_profile = self.__create_author_profile(text, self.n, self.L)
     return self.__find_most_similar_profile(self.author_profiles, author_profile)
 
-  def evaluate(self, X, y):
+  def test(self, X, y):
     return True
 
   def save(self):
@@ -132,7 +136,7 @@ class WordLevelPOSNgram:
       dataset[i] = self.__create_author_profile(dataset[i], n, L)
     return dataset
 
-  def __create_author_profile(self, text, n, L):
+  def __create_author_profile(self, text, n=DEFAULT_N, L=DEFAULT_L):
     cleaned_text = self.__preprocess_text(text)
     pos_tags = pos_tag(word_tokenize(cleaned_text))
     pos_tags = [tag[1] for tag in pos_tags]
@@ -200,12 +204,12 @@ class WordLevelPOSNgram:
       if sum < similarity_score:
         similarity_score = sum
         index = i
-    return index, self.dataset.index[index]
+    return self.dataset.index[index]
 
   def __calculate_dissimilarity(self, value1, value2):
     return ((2*(value1 - value2))/(value1 + value2))**2
 
-  def fit(self, n, L):
+  def fit(self, n=DEFAULT_N, L=DEFAULT_L):
     self.n, self.L = n, L
     self.cleaned_dataset = self.__preprocess_text_array(self.dataset)
     self.author_profiles = self.__create_author_profiles(self.cleaned_dataset, n, L)
@@ -215,7 +219,7 @@ class WordLevelPOSNgram:
     author_profile = self.__create_author_profile(text, self.n, self.L)
     return self.__find_most_similar_profile(self.author_profiles, author_profile)
 
-  def evaluate(self, X, y):
+  def test(self, X, y):
     return True
 
   def save(self):

@@ -95,23 +95,8 @@ swagger = Swagger(app)
 
 
 def getModelFromDict(args):
-    print(args[-1])
-    requestedModel = Model_dict[args[-1]]
-    counter = len(args)-2
-    while(isinstance(requestedModel,dict)):
-        if(counter<0):
-            print(list(requestedModel.keys())[0])
-            requestedModel =requestedModel[list(requestedModel.keys())[0]]
-        else:
-            requestedModel = requestedModel[args[counter]]
-            print(args[counter])
-            counter = counter -1
-    counter = counter +1 
-    last_args = args[:counter]
-    if(counter<0):
-        last_args = []
-    print(last_args)
-    return requestedModel, last_args
+    print(args[-1],args[-2])
+    return Model_dict[args[-1]][args[-2]]
 
 
 def runMethodOfModel(methodName, args,material):
@@ -121,8 +106,8 @@ def runMethodOfModel(methodName, args,material):
         for key in list(Model_dict.keys()):
             results.append(Model_dict[key].getattr(requestedModel, methodName)(material,[]))
     else:
-        model, last_args =  getModelFromDict(args)
-        results.append(getattr(model,methodName)(material,last_args))
+        model =  getModelFromDict(args)
+        results.append(getattr(model,methodName)(material))
 
     return results
 
@@ -139,7 +124,7 @@ def predict():
     text = parameters.get("text")
     args = parameters.get("args")
 
-    return runMethodOfModel("predict",args,text)
+    return jsonify(runMethodOfModel("predict",args,text))
 
 
 
@@ -149,7 +134,7 @@ def predict():
 def train(): 
     parameters = request.get_json()
     args = parameters.get("args")
-    return runMethodOfModel("train",args,test_data)
+    return jsonify(runMethodOfModel("fit",args,test_data))
 
 
 
@@ -159,7 +144,7 @@ def train():
 def test(): 
     parameters = request.get_json()
     args = parameters.get("args")
-    return runMethodOfModel("test", args, train_data)
+    return jsonify(runMethodOfModel("evaluate", args, train_data))
 
 
 if __name__ == '__main__':

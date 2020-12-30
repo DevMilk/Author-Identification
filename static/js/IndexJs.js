@@ -1,4 +1,4 @@
-function getInput(){return document.getElementById("input").innerHTML;}
+function getInput(){return document.getElementById("input").value;}
 /*
 BOW = 0
 NGRAM = 2
@@ -6,7 +6,7 @@ STYLE = 3
 ALL = 1
 */
 
-function POST(endpoint, requestBody){
+function POST(endpoint, requestBody,handleFunc){
 	const xhr = new XMLHttpRequest();   // new HttpRequest instance 
 	xhr.open("POST", endpoint);
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -18,16 +18,15 @@ function POST(endpoint, requestBody){
   	      this.status < 300) {
 			  if(this.responseText=="")
 				  return
-			  result = JSON.parse(this.responseText);
-			  console.log(result);
+			  handleFunc(JSON.parse(this.responseText));
 		  }
     }
 }
 
 var enums = {
-	"BASIC": "BASIC",
-	"TF-IDF": "TF-IDF",
-	
+	"BASIC": "BASIC-BOW",
+	"TF-IDF": "TF-IDF-BOW",
+	"STYLE-BASED":"STYLE-BASED",
 	"SVC": "SVC",
 	"Random Forest": "RF",
 	"Multinomial Naive Bayes": "MNB",
@@ -38,10 +37,10 @@ var enums = {
 
 	"ALL IN ONE": "ALL",
 	"NGRAM": "NGRAM",
-	"BOW": "BOW"
+	"BOW": null
+
 };
 
-var  BaseClasses = ["ALL IN ONE","NGRAM","BOW"]
 // Additional: BASIC/TF-IDF SVC/RF/MNB CHR/WRD/POS
 function predict(args){
 	let input = getInput();
@@ -51,7 +50,7 @@ function predict(args){
 	}
 	console.log("Sended JSON: ",request);
 	endpoint = document.getElementById("acts").value;
-	POST("/"+endpoint,request)
+	POST("/"+endpoint,request,function(responseArray){document.getElementById("prediction").innerText=responseArray[0];})
 
 }
 
@@ -84,7 +83,8 @@ function click(event){
 	let argsArray = []
 	if(args.length!=0){
 		for(var i = 0;i<args.length;i++){
-			argsArray.push(enums[args[i]])
+			if(enums[args[i]]!=null)
+				argsArray.push(enums[args[i]])
 		}
 	}
 	predict(argsArray);
