@@ -6,74 +6,88 @@ import pickle
 import pandas as pd
 from flasgger import Swagger
 
-from models import *
+from models.model_getter import *
 
-
-print(abc)
 
 Model_dict = {
     "NGRAM": {
-        "WRD": None ,
-        "CHR": None,
-        "POS": None
+        "WRD": get_ngram_wrd(),
+        "CHR": get_ngram_chr(),
+        "POS": get_ngram_pos()
     },
     "BASIC-BOW": {
-        "RF": None,
-        "MNB": None,
-        "SVC": None
+        "RF": get_basic_bow_rf(),
+        "MNB": get_basic_bow_mnb(),
+        "SVC": get_basic_bow_svc()
     },
     "TF-IDF-BOW": {
-        "RF": None,
-        "MNB": None,
-        "SVC": None
+        "RF": get_tf_idf_bow_rf(),
+        "MNB": get_tf_idf_bow_rf(),
+        "SVC": get_tf_idf_bow_rf()
     },
     "STYLE-BASED": {
-        "RF": None,
-        "SVC": None
+        "RF": get_style_based_rf(),
+        "SVC": get_style_based_svc()
     }
 }
 
-def load_model(mainModel, subModel):
-  pickle_filename = "./models/saved_models/"+mainModel+ '/' + subModel+".pkl"
-  picklefile = open(pickle_filename, 'rb')
-  model = pickle.load(picklefile)
-  picklefile.close()
-  return model
+# Model_dict = {
+#     "NGRAM": {
+#         "WRD": get_ngram_wrd(),
+#         "CHR": get_ngram_chr(),
+#         # "POS": get_ngram_pos()
+#     },
+#     "BASIC-BOW": {
+#         "RF": None,
+#         "MNB": None,
+#         "SVC": None
+#     },
+#     "TF-IDF-BOW": {
+#         "RF": None,
+#         "MNB": None,
+#         "SVC": None
+#     },
+#     "STYLE-BASED": {
+#         "RF": None,
+#         "SVC": None
+#     }
+# }
 
-print('before')
-try:
-    model = load_model('NGRAM', 'CHR')
-except Exception as e:
-    print(e)
-print('after')
-print(model.predict('asd'))
 
-def load_models():
-    models = []
-    try:
-        for mainModel in list(Model_dict.keys()):
-            for subModel in list(Model_dict[mainModel].keys()): 
-                model= mainModel + '/' + subModel
-                try:
-                    Model_dict[mainModel][subModel] = load_model(mainModel, subModel)
-                    print(model + 'was installed successfully!')
-                except Exception as e:
-                    print('An error has occurred while installing ' + model)
-                    # print(e)
+
+# def load_model(mainModel, subModel):
+#   pickle_filename = "./models/saved_models/"+mainModel+ '/' + subModel+".pkl"
+#   picklefile = open(pickle_filename, 'rb')
+#   model = pickle.load(picklefile)
+#   picklefile.close()
+#   return model
+
+
+# def load_models():
+#     models = []
+#     try:
+#         for mainModel in list(Model_dict.keys()):
+#             if mainModel == 'NGRAM': continue
+#             for subModel in list(Model_dict[mainModel].keys()):
+#                 model= mainModel + '/' + subModel
+#                 try:
+#                     Model_dict[mainModel][subModel] = load_model(mainModel, subModel)
+#                     print(model + 'was installed successfully!')
+#                 except Exception as e:
+#                     print('An error has occurred while installing ' + model)
+#                     print(e)
                 
-    except Exception as e: 
-        print(e)
-    return models
+#     except Exception as e: 
+#         print(e)
+#     return models
 
 
 def load_dataset():
     col_list = ["author","text"]
     return pd.read_csv("dataset/train.csv",usecols=col_list),pd.read_csv("dataset/test.csv",usecols=col_list)
 
-print('hello world')
-print(Model_dict)
-models = load_models() #Modelleri localden çekecek
-print(models['NGRAM']['POS'].predict('asd'))
+# load_models()
+
 train_data, test_data = load_dataset()
 
 app = Flask(__name__)
@@ -102,16 +116,15 @@ def getModelFromDict(args):
 
 def runMethodOfModel(methodName, args,material):
     results = []
+    requestedModel = getModelFromDict(args)
     if(args[-1]=="ALL"):
-        for key in list(requestedModel.keys()):
-            results.append(Model_dict[key].getattr(model,methodName)(material,[]))
+        for key in list(Model_dict.keys()):
+            results.append(Model_dict[key].getattr(requestedModel, methodName)(material,[]))
     else:
         model, last_args =  getModelFromDict(args)
         results.append(getattr(model,methodName)(material,last_args))
 
     return results
-
-
 
 @app.route('/')
 def hello():
@@ -150,4 +163,4 @@ def test():
 
 
 if __name__ == '__main__':
-    app.run()
+    pass
