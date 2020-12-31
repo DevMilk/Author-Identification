@@ -11,23 +11,23 @@ from models.model_getter import *
 
 Model_dict = {
     "NGRAM": {
-        "WRD": get_ngram_wrd(),
-        "CHR": get_ngram_chr(),
-        "POS": get_ngram_pos()
+        "WRD": getNgram(CharLevelTextNgram),
+        "CHR": getNgram(CharLevelTextNgram),
+        "POS": getNgram(WordLevelPOSNgram)
     },
     "BASIC-BOW": {
-        "RF": get_basic_bow_rf(),
-        "MNB": get_basic_bow_mnb(),
-        "SVC": get_basic_bow_svc()
+        "RF": getBasicBow("RF"),
+        "MNB": getBasicBow("MNB"),
+        "SVC": getBasicBow("SVC")
     },
     "TF-IDF-BOW": {
-        "RF": get_tf_idf_bow_rf(),
-        "MNB": get_tf_idf_bow_rf(),
-        "SVC": get_tf_idf_bow_rf()
+        "RF": getTfidfBow("RF"),
+        "MNB": getTfidfBow("MNB"),
+        "SVC": getTfidfBow("SVC")
     },
     "STYLE-BASED": {
-        "RF": get_style_based_rf(),
-        "SVC": get_style_based_svc()
+        "RF": getStyleBased("RF"),
+        "SVC": getStyleBased("SVC")
     }
 }
 

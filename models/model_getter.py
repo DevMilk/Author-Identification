@@ -10,64 +10,26 @@ merged_dataset = get_merged_dataset()
 X_train, y_train, X_test, y_test = get_train_test_dataset()
 
 # NGRAM MODELS
-def get_ngram_wrd():
-    return None
 
-def get_ngram_chr():
-    charLevelTextNgram = CharLevelTextNgram(dataset=merged_dataset)
-    charLevelTextNgram.fit(n=3, L=30)
-    print('ngram_chr was installed successfully!')
-    return charLevelTextNgram
+def getModel(model,init_arg,fit_args):
+    model_object = model(init_arg)
+    model_object.fit(*fit_args)
+    print('{} was installed successfully!'.format(model))
+    return model_object
 
-def get_ngram_pos():
-    wordLevelPOSNgram = WordLevelPOSNgram(dataset=merged_dataset)
-    wordLevelPOSNgram.fit(n=3, L=30)
-    print('ngram_pos was installed successfully!')
-    return wordLevelPOSNgram
+def getNgram(ngramClass):
+    return getModel(ngramClass,merged_dataset,(3,30))
 
-# BASIC BOW MODELS
-def get_basic_bow_rf():
-    direct_bow_model_randomForest = Direct_BOW_Model('RF')
-    direct_bow_model_randomForest.fit(X_train, y_train)
-    print('basic_bow_rf was installed successfully!')
-    return direct_bow_model_randomForest
-
-def get_basic_bow_mnb():
-    direct_bow_model_multinomialNB = Direct_BOW_Model('MNB')
-    direct_bow_model_multinomialNB.fit(X_train, y_train)
-    print('basic_bow_mnb was installed successfully!')
-    return direct_bow_model_multinomialNB
-
-def get_basic_bow_svc():
-    direct_bow_model_linearSVC = Direct_BOW_Model('SVC')
-    direct_bow_model_linearSVC.fit(X_train, y_train)
-    print('basic_bow_svc was installed successfully!')
-    return direct_bow_model_linearSVC
+#Basıc Bow Model
+def getBasicBow(ml):
+    return getModel(Direct_BOW_Model,ml,(X_train,y_train))
 
 # TF-IDF BOW MODELS
-def get_tf_idf_bow_rf():
-    tf_idf_bow_model_randomForest = TfIdf_BOW_Model('RF')
-    tf_idf_bow_model_randomForest.fit(X_train, y_train)
-    print('tf_idf_bow_rf was installed successfully!')
-    return tf_idf_bow_model_randomForest
-
-def get_tf_idf_bow_mnb():
-    tf_idf_model_multinomialNB = TfIdf_BOW_Model('MNB')
-    tf_idf_model_multinomialNB.fit(X_train, y_train)
-    print('tf_idf_bow_mnb was installed successfully!')
-    return tf_idf_model_multinomialNB
-    
-def get_tf_idf_bow_svc():
-    tf_idf_model_model_linearSVC = TfIdf_BOW_Model('SVC')
-    tf_idf_model_model_linearSVC.fit(X_train, y_train)
-    print('tf_idf_bow_svc was installed successfully!')
-    return tf_idf_model_model_linearSVC
+def getTfidfBow(ml):
+    return getModel(TfIdf_BOW_Model,ml,(X_train,y_train))
 
 
 # STYLE-BASED MODELS
-def get_style_based_rf():
-    return None
-
-def get_style_based_svc():
+def getStyleBased(ml):
     return None
 

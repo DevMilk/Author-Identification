@@ -8,7 +8,7 @@ from models.preprocessing import clean_text
 #TODO: TEST KISMINI YAP
 
 DEFAULT_N = 3
-DEFAULT_L = 3
+DEFAULT_L = 30
 class CharLevelTextNgram:
   def __init__(self, dataset):
     self.dataset = dataset.copy()
