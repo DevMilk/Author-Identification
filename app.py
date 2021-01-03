@@ -14,21 +14,25 @@ Model_dict = {
     "NGRAM": {
         "WRD": getNgram(CharLevelTextNgram),
         "CHR": getNgram(CharLevelTextNgram),
-        "POS": getNgram(WordLevelPOSNgram)
+        "POS": getNgram(WordLevelPOSNgram),
+        "DEFAULT": "POS"
     },
     "BASIC-BOW": {
         "RF": getBasicBow("RF"),
         "MNB": getBasicBow("MNB"),
-        "SVC": getBasicBow("SVC")
+        "SVC": getBasicBow("SVC"),
+        "DEFAULT": "SVC"
     },
     "TF-IDF-BOW": {
         "RF": getTfidfBow("RF"),
         "MNB": getTfidfBow("MNB"),
-        "SVC": getTfidfBow("SVC")
+        "SVC": getTfidfBow("SVC"),
+        "DEFAULT": "SVC"
     },
     "STYLE-BASED": {
         "RF": StyleBased("RF"),
-        "LR": StyleBased("LR")
+        "LR": StyleBased("LR"),
+        "DEFAULT": "RF"
     }
 }
 
@@ -99,13 +103,24 @@ def getModelFromDict(args):
     print(args[-1],args[-2])
     return Model_dict[args[-1]][args[-2]]
 
+def most_frequent(List): 
+    counter = 0
+    num = List[0] 
+      
+    for i in List: 
+        curr_frequency = List.count(i) 
+        if(curr_frequency> counter): 
+            counter = curr_frequency 
+            num = i 
+  
+    return num 
 
 def runMethodOfModel(methodName, args,material):
     results = []
-    requestedModel = getModelFromDict(args)
     if(args[-1]=="ALL"):
         for key in list(Model_dict.keys()):
-            results.append(Model_dict[key].getattr(requestedModel, methodName)(material,[]))
+            results.append(getattr(Model_dict[key][Model_dict[key]["DEFAULT"]], methodName)(material))
+        results = [most_frequent(results)]
     else:
         model =  getModelFromDict(args)
         results.append(getattr(model,methodName)(material))

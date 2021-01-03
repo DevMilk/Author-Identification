@@ -42,7 +42,15 @@ var enums = {
 	"BOW": null
 
 };
+var desc = {
+	"BOW": "IN THIS MODEL, A TEXT (SUCH AS A SENTENCE OR A DOCUMENT) IS \
+	REPRESENTED AS THE BAG (MULTISET) OF ITS WORDS, DISREGARDING GRAMMAR AND EVEN WORD ORDER BUT KEEPING MULTIPLICITY.",
+	"NGRAM": "NGRAM IS A METHOD THAT EXTRACTS MOST FREQUENT WORD, CHARACTER OR POS TAGS TO \
+		IDENTIFY DOCUMENT",
+	"STYLE-BASED": "STYLE BASED CLASSIFICATION USES DOZENS OF ATTRIBUTES OF TEXT SUCH AS TOTAL SENTENCES IN TEXT, \
+	AVERAGE WORD LENGTH IN TEXT, NOUN COUNT, VERB COUNT ETC. "
 
+}
 // Additional: BASIC/TF-IDF SVC/RF/MNB CHR/WRD/POS
 function predict(args){
 	let input = getInput();
@@ -66,6 +74,7 @@ function getParent(element){
 	return element.parentNode;
 }
 
+let descriptionLoc = document.getElementById("description");
 function click(event){
 	currentElement = event.target; 
 	current =  getArgFromElement(currentElement);
@@ -74,7 +83,8 @@ function click(event){
 	while(current!="ALL IN ONE" && currentElement!=null){
 		if(currentElement.tagName=="MENUITEM" && !args.includes(current))
 			args.push(current);
-
+		if(desc[current]!=null)
+			descriptionLoc.innerText = desc[current];
 		currentElement = getParent(currentElement);
 		current = getArgFromElement(currentElement);
 	}
