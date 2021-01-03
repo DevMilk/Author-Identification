@@ -12,7 +12,7 @@ from models.model_getter import *
 
 Model_dict = {
     "NGRAM": {
-        "WRD": getNgram(CharLevelTextNgram),
+        "WRD": getNgram(WordLevelTextgram),
         "CHR": getNgram(CharLevelTextNgram),
         "POS": getNgram(WordLevelPOSNgram)
     },
