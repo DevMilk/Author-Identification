@@ -5,12 +5,13 @@ from models.ngram_models import CharLevelTextNgram
 from models.ngram_models import WordLevelPOSNgram
 from models.basic_bow_models import Direct_BOW_Model
 from models.basic_bow_models import TfIdf_BOW_Model
+from utils.model import load_model
+
 
 merged_dataset = get_merged_dataset()
 X_train, y_train, X_test, y_test = get_train_test_dataset()
 
 # NGRAM MODELS
-
 def getModel(model,init_arg,fit_args):
     model_object = model(init_arg)
     model_object.fit(*fit_args)
@@ -30,6 +31,6 @@ def getTfidfBow(ml):
 
 
 # STYLE-BASED MODELS
-def getStyleBased(ml):
-    return None
+def getStyleBased(subModel):
+    return load_model('STYLE-BASED', subModel);
 

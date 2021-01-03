@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, redirect, request
 from flask import render_template
+from models.wrapper import StyleBased
 import os
 from enum import Enum
 import pickle
@@ -26,8 +27,8 @@ Model_dict = {
         "SVC": getTfidfBow("SVC")
     },
     "STYLE-BASED": {
-        "RF": getStyleBased("RF"),
-        "SVC": getStyleBased("SVC")
+        "RF": StyleBased("RF"),
+        "LR": StyleBased("LR")
     }
 }
 
