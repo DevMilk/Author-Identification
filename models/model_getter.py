@@ -3,6 +3,7 @@ from models.dataset import get_merged_dataset
 from models.dataset import get_train_test_dataset
 from models.ngram_models import CharLevelTextNgram
 from models.ngram_models import WordLevelPOSNgram
+from models.ngram_models import WordLevelTextgram
 from models.basic_bow_models import Direct_BOW_Model
 from models.basic_bow_models import TfIdf_BOW_Model
 from utils.model import load_model
