@@ -224,3 +224,4 @@ class WordLevelPOSNgram:
 
   def save(self):
     return True
+

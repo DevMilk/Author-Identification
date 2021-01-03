@@ -30,6 +30,8 @@ var enums = {
 	"SVC": "SVC",
 	"Random Forest": "RF",
 	"Multinomial Naive Bayes": "MNB",
+	"Logistic Regression": "LR",
+	"LR": "LR",
 
 	"Character Based": "CHR",
 	"Word Based" : "WRD",
