@@ -36,57 +36,6 @@ Model_dict = {
     }
 }
 
-# Model_dict = {
-#     "NGRAM": {
-#         "WRD": get_ngram_wrd(),
-#         "CHR": get_ngram_chr(),
-#         # "POS": get_ngram_pos()
-#     },
-#     "BASIC-BOW": {
-#         "RF": None,
-#         "MNB": None,
-#         "SVC": None
-#     },
-#     "TF-IDF-BOW": {
-#         "RF": None,
-#         "MNB": None,
-#         "SVC": None
-#     },
-#     "STYLE-BASED": {
-#         "RF": None,
-#         "SVC": None
-#     }
-# }
-
-
-
-# def load_model(mainModel, subModel):
-#   pickle_filename = "./models/saved_models/"+mainModel+ '/' + subModel+".pkl"
-#   picklefile = open(pickle_filename, 'rb')
-#   model = pickle.load(picklefile)
-#   picklefile.close()
-#   return model
-
-
-# def load_models():
-#     models = []
-#     try:
-#         for mainModel in list(Model_dict.keys()):
-#             if mainModel == 'NGRAM': continue
-#             for subModel in list(Model_dict[mainModel].keys()):
-#                 model= mainModel + '/' + subModel
-#                 try:
-#                     Model_dict[mainModel][subModel] = load_model(mainModel, subModel)
-#                     print(model + 'was installed successfully!')
-#                 except Exception as e:
-#                     print('An error has occurred while installing ' + model)
-#                     print(e)
-                
-#     except Exception as e: 
-#         print(e)
-#     return models
-
-
 def load_dataset():
     col_list = ["author","text"]
     return pd.read_csv("dataset/train.csv",usecols=col_list),pd.read_csv("dataset/test.csv",usecols=col_list)
@@ -135,7 +84,7 @@ def hello():
 #Modele tahmin yaptırır
 
 @app.route('/predict', methods= ["POST"])
-def predict():
+def predict():""
     parameters = request.get_json()
     text = parameters.get("text")
     args = parameters.get("args")
